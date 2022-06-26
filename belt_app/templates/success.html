@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+
+
+    <div class="container  mt-5">
+        <div class="row">
+            <div class="col">
+                <h1> hello {{ loginUser.First_Name}} {{ loginUser.Last_Name}} </h1>
+            </div>
+            <div class="col">
+                <a href="/logout">Log Out</a>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div>
+
+        <div class="container  mt-5">
+            <div class="row">
+
+
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+
+                <div class="col ">
+                    <div>
+                        <h3>your wish list:</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">item</th>
+                                    <th scope="col">added by</th>
+                                    <th scope="col">date added </th>
+                                    <th scope="col">action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                             
+                                {% for item in items %}
+                                <tr>
+                                    <th scope="row"><a href="items/{{item.id}}">{{item.title}}</a></th>
+                                    <td>{{item.user.First_Name}}</td>
+                                    <td>{{item.createdAt}}</td>
+                                    {% if user in item.users_wish.all %}
+                                    <td><a href="/unwish/{{item.id}}">Favorites</a></td>
+                                    {% else %}
+                                    <td><a href="/wish/{{item.id}}">Add to Favorites</a></td>
+                                    {% endif %}
+                                </tr>
+                                 
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                        
+
+                    </div>
+
+                        <br>
+                    <!--all items of other users-->
+                    <div>
+                        <h3>outher users wish list:</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">item</th>
+                                    <th scope="col">added by</th>
+                                    <th scope="col">date added </th>
+                                    <th scope="col">action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in items %}
+                                <tr>
+                                    <th scope="row"><a href="items/{{item.id}}">{{item.title}}</a></th>
+                                    <td>{{item.user.First_Name}}</td>
+                                    <td>{{item.createdAt}}</td>
+                                    {% if item in user.wishes.all %}
+                                    <td><a href="/unwish/{{item.id}}">Favorites</a></td>
+                                    {% else %}
+                                    <td><a href="/wish/{{item.id}}">Add to Favorites</a></td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                        <a href="/toadd">add item</a>
+
+                    </div>
+                </div>
+            </div>
+</body>
+
+</html>
